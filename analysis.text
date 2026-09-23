@@ -1,0 +1,33 @@
+CIS 351 01
+Dante Givens
+09/23/2026
+Professor Kurmas
+
+Project 1: Build an Adder
+
+Analysis for my SignedFullAdder_16Bit.jls
+
+Total Size: 110 !
+
+ SignedFullAdder_16Bit.jls has:
+  2x Not Gates
+  2x And Gates
+  2x NOR Gates
+    2+2+2 =6
+
+  4x my FourBitCLA subcircuit which has 
+    26 Total Gates! (I pray this monster never breaks)
+    4x26 = 104
+
+104+6 = 110
+
+exact maximum propagation delay:
+
+    To start I'll find the propagation delay for both outputs on my FourBitCLA:
+
+    Longest path the the Output is:
+
+    Longest path for the CarryOut is:
+
+
+Using that info i can now find the propagation delay for all outputs on my SignedFullAdder_16Bit:
