@@ -68,7 +68,7 @@ Big-O running time: O(n)
     the running time grows linearly with the adder width, making it O(n).
 
 
-How I implementated Split Mode:
+How I implemented Split Mode:
 
     I implemented Split Mode by controlling the carry between my second and third FourBitCLA.
     Normally, the CarryOut from my second FourBitCLA becomes the CarryIn for my
@@ -79,8 +79,9 @@ How I implementated Split Mode:
     upper eight bits to operate as a separate adder with a CarryIn of 0.
 
     Split Mode added one NOT gate and one AND gate, for a total cost of two
-    gates. The NOT gate has a delay of 5, but happens far to early to need to be considered.
-    While the AND gate has a delay of 10. This adds 10 to the propagation delay of the main carry path between bits 7 and 8.
+    gates. The NOT gate has a delay of 5, but happens far too early to need to be considered.
+    The AND gate has a delay of 10, and happens in the middle of the ripple chain so it added
+    10 to the propagation delay of the main carry path between my second and third FourBitCLA subcircuits.
 
 
 Overall Design:
