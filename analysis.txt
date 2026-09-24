@@ -1,0 +1,97 @@
+CIS 351 01
+Dante Givens
+09/23/2026
+Professor Kurmas
+
+Project 1: Build an Adder
+
+Analysis for my SignedFullAdder_16Bit.jls
+
+
+Total Size: 110 (wow!)
+
+    SignedFullAdder_16Bit.jls has:
+        2x NOT Gates
+        2x AND Gates
+        2x XOR Gates
+            2+2+2 =6
+
+        4x my FourBitCLA subcircuit which has:
+            26 Total Gates! (I pray this monster never breaks)
+            4x26 = 104
+
+        104+6 = 110
+
+
+Exact maximum propagation delay: 130
+
+    To start I'll find the propagation delay for both outputs on my FourBitCLA:
+
+        Longest path to Output:
+        10 (propagate/generate gate) + 10 (carry AND) + 10 (carry OR)
+        + 10 (sum XOR) = 40 time
+
+        Longest path to CarryOut:
+        10 (propagate/generate gate) + 10 (carry AND) + 10 (carry OR)
+        = 30 time
+
+
+    Using that info i can now find the propagation delay for all outputs on my SignedFullAdder_16Bit:
+
+        Longest path to Output:
+        30 (first CLA CarryOut)
+        + 20 (second CLA CarryOut)
+        + 10 (split-control AND)
+        + 20 (third CLA CarryOut)
+        + 30 (fourth CLA Output)
+        = 110 time
+
+        Longest path to CarryOut:
+        30 + 20 + 10 + 20 + 20
+        = 100 time
+
+        Longest path to Overflow:
+        110 (Output bit 15)
+        + 10 (overflow XOR)
+        + 10 (final AND)
+        = 130 time
+
+
+Big-O running time: O(n)
+
+    My adder has an O(n) running time. The carry-lookahead logic makes the delay
+    inside each FourBitCLA constant, but the carry still has to ripple between the
+    four-bit blocks. To extend this design to 32 bits, I would connect eight
+    FourBitCLA blocks in the same pattern. For 64 bits, I would connect sixteen
+    blocks. Each additional four bit block adds another constant carry delay, so
+    doubling the adder width approximately doubles the worst-case delay. Therefore,
+    the running time grows linearly with the adder width, making it O(n).
+
+
+How I implementated Split Mode:
+
+    I implemented Split Mode by controlling the carry between my second and third FourBitCLA.
+    Normally, the CarryOut from my second FourBitCLA becomes the CarryIn for my
+    third FourBitCLA. I passed this carry through an AND gate with NOT Split as
+    its other input. This means that when Split is 0, the carry passes through normally,
+    allowing the circuit to act as one 16 bit adder. When Split is 1, the AND gate forces 
+    the carry into bit 8 to 0. This discards the carry from the lower eight bits and allows the
+    upper eight bits to operate as a separate adder with a CarryIn of 0.
+
+    Split Mode added one NOT gate and one AND gate, for a total cost of two
+    gates. The NOT gate has a delay of 5, but happens far to early to need to be considered.
+    While the AND gate has a delay of 10. This adds 10 to the propagation delay of the main carry path between bits 7 and 8.
+
+
+Overall Design:
+    
+    My adder uses a hybrid CLA and ripple carry design. The 16-bit
+    input is divided between four FourBitCLA subcircuits, which handle bits 0-3,
+    4-7, 8-11, and 12-15. Carry lookahead(CLA) is a sub-linear addition algorithm
+    used inside each of my FourBitCLA subcircuits. It calculates the four internal carries in parallel
+    instead of waiting for them to ripple through four separate full adders.
+
+    The four CLA blocks are connected using ripple carry, so the
+    CarryOut of one block becomes the CarryIn of the next block. This is simpler
+    than building carry lookahead logic across the entire 16-bit circuit while
+    still being faster than a normal 16-bit ripple-carry adder.
