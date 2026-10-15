@@ -1,0 +1,68 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Inspect DLUnit sequential API",
+			"type": "shell",
+			"command": "javap -classpath DLUnit.jar -c edu.gvsu.dlunit.DLUnit",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Inspect JLS sequential execution",
+			"type": "shell",
+			"command": "jar tf DLUnit.jar | Select-String 'edu/gvsu/dlunit/.*(JLS|Simulator).*class'; Add-Type -AssemblyName System.IO.Compression.FileSystem; $archive = [System.IO.Compression.ZipFile]::OpenRead('characteristic.jls'); try { $reader = [System.IO.StreamReader]::new($archive.GetEntry('JLSCircuit').Open()); try { $reader.ReadToEnd() } finally { $reader.Dispose() } } finally { $archive.Dispose() }",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Inspect DLUnit JLS clock behavior",
+			"type": "shell",
+			"command": "javap -classpath DLUnit.jar -c -p edu.gvsu.dlunit.jls.JLS",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Inspect DLUnit one-cycle simulation",
+			"type": "shell",
+			"command": "javap -classpath DLUnit.jar -c -p edu.gvsu.dlunit.jls.JLS | Select-String -Pattern 'public void run\\(|public void reset\\(|setMaxTime|setClock|setValue|gateDelay|clock|cycle' -Context 3,32; javap -classpath DLUnit.jar -c -p edu.gvsu.dlunit.jls.JLSUtilities | Select-String -Pattern 'Clock|cycle|one|setValue|delay' -Context 3,12",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Inspect DLUnit clock configuration",
+			"type": "shell",
+			"command": "javap -classpath DLUnit.jar -c -p edu.gvsu.dlunit.jls.BatchSimulator2 | Select-String -Pattern 'Clock|runSim|setMaxTime|setValue|cycle|one|ldc|initSim' -Context 2,10; javap -classpath DLUnit.jar -c -p edu.gvsu.dlunit.jls.JLS | Select-String -Pattern 'setRegister\\(' -Context 0,100",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Inspect DLUnit simulation timing controls",
+			"type": "shell",
+			"command": "javap -classpath DLUnit.jar edu.gvsu.dlunit.DLUnitCore edu.gvsu.dlunit.jls.JLS edu.gvsu.dlunit.jls.BatchSimulator2 edu.mtu.cs.jls.sim.BatchSimulator edu.mtu.cs.jls.elem.Clock; javap -classpath DLUnit.jar -c -p edu.gvsu.dlunit.jls.JLS | Select-Object -First 150; javap -classpath DLUnit.jar -c -p edu.gvsu.dlunit.jls.TestGenFromUnitTest",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Inspect JLS public timing API",
+			"type": "shell",
+			"command": "javap -classpath DLUnit.jar edu.mtu.cs.jls.sim.Simulator edu.mtu.cs.jls.Circuit edu.mtu.cs.jls.elem.Register; javap -classpath DLUnit.jar -c edu.mtu.cs.jls.elem.Clock | Select-String -Pattern 'initSim\\(' -Context 0,90",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Compile corrected characteristic test",
+			"type": "shell",
+			"command": "javac -cp DLUnit.jar -d \"$env:TEMP\\CIS351-Project2-tests\" CharacteristicTableTest.java",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Run corrected characteristic test",
+			"type": "shell",
+			"command": "'Y' | java -jar DLUnit.jar --jls characteristic.jls \"$env:TEMP\\CIS351-Project2-tests\\CharacteristicTableTest.class\"",
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
