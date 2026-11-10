@@ -1,0 +1,15 @@
+# This script launches a java application that runs the assembler in
+#  the MARS simulator and writes the result to the standard output
+
+dir=$(dirname "$0")
+dlunit="$dir/../../JLS/DLUnit.jar"
+#echo "Dirname is " $dir
+
+if [[ ! -e "$dlunit" ]]
+then
+   echo "DLUnit.jar must be in the repository's JLS directory."
+   exit 1
+fi
+
+java -cp "$dlunit" edu.gvsu.dlunit.MARSAssembler "$1"
+

@@ -1,5 +1,8 @@
 {
 	"version": "2.0.0",
+	"options": {
+		"cwd": "${workspaceFolder}/JLS"
+	},
 	"tasks": [
 		{
 			"label": "Inspect DLUnit sequential API",
