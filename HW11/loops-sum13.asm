@@ -1,20 +1,31 @@
 # Name: Dante Givens
 
 .text
-.globl intMax
+.globl sum13
 
-intMax:
-    move $v0, $a0
-    slt  $t0, $v0, $a1
-    beq  $t0, $zero, intMax_check_c
+sum13:
+    move $v0, $zero
+    move $t0, $a0
+    move $t1, $a1
+    li   $t2, 13
+
+sum13_loop:
+    blez $t1, sum13_done
     nop
-    move $v0, $a1
-
-intMax_check_c:
-    slt  $t0, $v0, $a2
-    beq  $t0, $zero, intMax_done
+    lw   $t3, 0($t0)
+    beq  $t3, $t2, sum13_skip
     nop
-    move $v0, $a2
+    addu $v0, $v0, $t3
+    addiu $t0, $t0, 4
+    addiu $t1, $t1, -1
+    b    sum13_loop
+    nop
 
-intMax_done:
+sum13_skip:
+    addiu $t0, $t0, 8
+    addiu $t1, $t1, -2
+    b    sum13_loop
+    nop
+
+sum13_done:
     jr $ra
