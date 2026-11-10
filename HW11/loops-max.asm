@@ -1,5 +1,4 @@
 # Name: Dante Givens
-# Partner: ADD PARTNER NAME IF APPLICABLE
 
 .text
 .globl max
