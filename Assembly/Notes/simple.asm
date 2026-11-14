@@ -1,4 +1,4 @@
-li $t0, 3
+li $t0, 8
 li $t1, 5
 li $t2, 6 
 li $t3, 7
@@ -15,4 +15,7 @@ areEqual:
 endIf:
 	li $t2, 15
 
-jr $t2
+	move $a0, $t1
+	li $v0, 1
+	syscall
+

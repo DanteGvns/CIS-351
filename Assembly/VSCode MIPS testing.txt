@@ -1,0 +1,16 @@
+MARS MIPS extension in VSCode
+
+Ctrl+Shift+P -> Preferences: Open User Settings (JSON)
+add this since the extension's syntax suckksss lmao
+
+
+    "[mips]": {
+    "editor.quickSuggestions": {
+        "other": "off",
+        "comments": "off",
+        "strings": "off"
+    },
+    "editor.suggestOnTriggerCharacters": false,
+    "editor.inlineSuggest.enabled": false,
+    "editor.wordBasedSuggestions": "off"
+    }
