@@ -107,6 +107,30 @@ Your circuit's Instruction Memory element is configured to load data from this f
 
 **Important:** `marsAssembler` is a *bash* script. It won't run on the Windows command line. You will need to use Cygwin, WSL, or something similar to run it. Another option is to look inside the bash script and just run the Windows version of that command "by hand".
 
+#### Windows PowerShell helper
+
+This repository also includes [marsAssembler.ps1](marsAssembler.ps1). It uses Java on your PATH and `DLUnit.jar` in the repository's `JLS` directory, located relative to the script.
+
+From the `Proj4-BuildACPU` directory, run:
+
+```powershell
+.\marsAssembler.ps1 .\basicOpsDemoTest.a
+```
+
+To save the machine code for JLS, use `-o` (short for `-OutputFile`). The helper writes ASCII automatically:
+
+```powershell
+.\marsAssembler.ps1 basicOpsDemoTest.a -o instructions
+```
+
+This replaces the existing `instructions` file. Without `-o`, the helper still prints the machine code to the terminal. Paths containing spaces must be quoted.
+
+If PowerShell blocks script execution, invoke it with a process-only execution policy override:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\marsAssembler.ps1 .\basicOpsDemoTest.a
+```
+
 **Note:** `marsAssembler` only works with `DLUnit` version 1.1.1 or newer (built 3 November 2020). You may need to [download the most recent version](https://us.prairielearn.com/pl/course_instance/217555/instance_question/778114628/clientFilesCourse/jls_jars/DLUnit.jar). Also, make sure `marsAssembler` and `DLUnit.jar` are in the same directory.
 
 Once you have the JLS circuit set up to run the relevant instructions, you can run it and view circuit state using the `Simulator Window`. Be sure to add watches, probes, and so on as necessary to track any values of interest in the CPU. You may also need to change the `Scale Factor` to make the results easier to understand.

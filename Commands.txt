@@ -1,14 +1,15 @@
-examples on how to run these
+Examples (PowerShell, from the repository root)
+
 --------------------------------------------------------------------------------------------------------------------
 JLS / circuits
 --------------------------------------------------------------------------------------------------------------------
 java -jar .\JLS\JLS.jar
 
-javac -cp DLUnit.jar Signed16BitAddSubtractTest.java 
-java -jar DLUnit.jar .\Subtractor_16bit.jls .\Signed16BitAddSubtractTest.class
+javac -cp .\JLS\DLUnit.jar .\JLS\Signed16BitAddSubtractTest.java
+java -jar .\JLS\DLUnit.jar .\JLS\Subtractor_16bit.jls .\JLS\Signed16BitAddSubtractTest.class
 
-
-java -jar .\JLS\DLUnit.jar .\Proj4-BuildACPU\PHSingleCycleCPU.jls builtin.SingleCycleCPUTest --param .\Proj4-BuildACPU\test.a
+#Run a test/.a file against a circuit/.jls file
+java -jar .\JLS\DLUnit.jar .\Proj4-BuildACPU\PHSingleCycleCPU.jls builtin.SingleCycleCPUTest --param .\Proj4-BuildACPU\basicOpsDemoTest.a
 
 
 
@@ -18,9 +19,13 @@ Mars / assembly
 --------------------------------------------------------------------------------------------------------------------
 java -jar .\Assembly\Mars4_5.jar
 
-java -jar .\Assembly\Mars4_5.jar nc 100 '$s0' '$s1' '$s2' .\Proj4-BuildACPU\test.a
+java -jar .\Assembly\Mars4_5.jar nc 100 '$s0' '$s1' '$s2' .\Proj4-BuildACPU\basicOpsDemoTest.a
 
-$ ./marsAssembler test_being_failed.asm > instructions
+--------------------------------------------------------------------------------------------------------------------
+Project 4 / assembler (run from the Proj4-BuildACPU folder)
+--------------------------------------------------------------------------------------------------------------------
+.\marsAssembler.ps1 basicOpsDemoTest.a
 
-.\marsAssembler.ps1 .\basicOpsDemoTest.a | Out-File -Encoding ascii .\instructions
 .\marsAssembler.ps1 basicOpsDemoTest.a -o instructions
+
+java -jar ..\JLS\JLS.jar PHSingleCycleCPU.jls
