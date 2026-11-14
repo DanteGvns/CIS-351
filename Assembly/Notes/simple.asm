@@ -14,3 +14,5 @@ areEqual:
 
 endIf:
 	li $t2, 15
+
+jr $t2
