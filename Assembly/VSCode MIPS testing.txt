@@ -14,3 +14,7 @@ add this since the extension's syntax suckksss lmao
     "editor.inlineSuggest.enabled": false,
     "editor.wordBasedSuggestions": "off"
     }
+
+
+also link to the text book so its in the repo
+https://acs.pub.ro/~cpop/CN1_2CB_2CD/CN1-NewCourses/Digital%20Design%20and%20Computer%20Architecture.pdf
