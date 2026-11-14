@@ -1,0 +1,26 @@
+examples on how to run these
+--------------------------------------------------------------------------------------------------------------------
+JLS / circuits
+--------------------------------------------------------------------------------------------------------------------
+java -jar .\JLS\JLS.jar
+
+javac -cp DLUnit.jar Signed16BitAddSubtractTest.java 
+java -jar DLUnit.jar .\Subtractor_16bit.jls .\Signed16BitAddSubtractTest.class
+
+
+java -jar .\JLS\DLUnit.jar .\Proj4-BuildACPU\PHSingleCycleCPU.jls builtin.SingleCycleCPUTest --param .\Proj4-BuildACPU\test.a
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+Mars / assembly
+--------------------------------------------------------------------------------------------------------------------
+java -jar .\Assembly\Mars4_5.jar
+
+java -jar .\Assembly\Mars4_5.jar nc 100 '$s0' '$s1' '$s2' .\Proj4-BuildACPU\test.a
+
+$ ./marsAssembler test_being_failed.asm > instructions
+
+.\marsAssembler.ps1 .\basicOpsDemoTest.a | Out-File -Encoding ascii .\instructions
+.\marsAssembler.ps1 basicOpsDemoTest.a -o instructions
