@@ -107,6 +107,10 @@ Your circuit's Instruction Memory element is configured to load data from this f
 
 **Important:** `marsAssembler` is a *bash* script. It won't run on the Windows command line. You will need to use Cygwin, WSL, or something similar to run it. Another option is to look inside the bash script and just run the Windows version of that command "by hand".
 
+#### Sign-extension subcircuit
+
+[SignExtend16To32.jls](SignExtend16To32.jls) can be imported into JLS as a subcircuit. Connect the 16-bit immediate field to `Input16`; its 32-bit `Output32` output preserves bits 15-0 and repeats bit 15 across bits 31-16. It is combinational and needs no clock.
+
 #### Windows PowerShell helper
 
 This repository also includes [marsAssembler.ps1](marsAssembler.ps1). It uses Java on your PATH and `DLUnit.jar` in the repository's `JLS` directory, located relative to the script.

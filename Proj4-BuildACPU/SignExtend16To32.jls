@@ -5,7 +5,7 @@ ELEMENT InputPin
  int y 120
  int width 72
  int height 24
- String name "Imm16"
+ String name "Input16"
  int bits 16
  int watch 0
  String orient "RIGHT"
@@ -82,7 +82,7 @@ ELEMENT OutputPin
  int y 120
  int width 84
  int height 24
- String name "SignImm"
+ String name "Output32"
  int bits 32
  int watch 0
  String orient "RIGHT"
