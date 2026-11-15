@@ -1,0 +1,151 @@
+CIRCUIT extend2Bits
+ELEMENT InputPin
+ int id 0
+ int x 60
+ int y 144
+ int width 72
+ int height 24
+ String name "Input26"
+ int bits 26
+ int watch 0
+ String orient "RIGHT"
+END
+ELEMENT Constant
+ int id 1
+ int x 132
+ int y 132
+ int width 24
+ int height 0
+ Int value 0
+ int base 10
+ String orient "RIGHT"
+END
+ELEMENT Binder
+ int id 2
+ int x 240
+ int y 120
+ int width 72
+ int height 36
+ int bits 28
+ String orient "RIGHT"
+ String noncontig "true"
+ int tristate 0
+ pair 0 0
+ pair 0 1
+ pair 1 2
+ pair 1 3
+ pair 1 4
+ pair 1 5
+ pair 1 6
+ pair 1 7
+ pair 1 8
+ pair 1 9
+ pair 1 10
+ pair 1 11
+ pair 1 12
+ pair 1 13
+ pair 1 14
+ pair 1 15
+ pair 1 16
+ pair 1 17
+ pair 1 18
+ pair 1 19
+ pair 1 20
+ pair 1 21
+ pair 1 22
+ pair 1 23
+ pair 1 24
+ pair 1 25
+ pair 1 26
+ pair 1 27
+END
+ELEMENT OutputPin
+ int id 3
+ int x 384
+ int y 120
+ int width 84
+ int height 24
+ String name "Output28"
+ int bits 28
+ int watch 0
+ String orient "RIGHT"
+END
+ELEMENT WireEnd
+ int id 4
+ int x 156
+ int y 132
+ int width 6
+ int height 6
+ String put "output"
+ ref attach 1
+ ref wire 5
+END
+ELEMENT WireEnd
+ int id 5
+ int x 240
+ int y 132
+ int width 6
+ int height 6
+ String put "1-0"
+ ref attach 2
+ ref wire 4
+END
+ELEMENT WireEnd
+ int id 6
+ int x 132
+ int y 156
+ int width 6
+ int height 6
+ String put "output"
+ ref attach 0
+ ref wire 7
+END
+ELEMENT WireEnd
+ int id 7
+ int x 192
+ int y 156
+ int width 6
+ int height 6
+ ref wire 6
+ ref wire 8
+END
+ELEMENT WireEnd
+ int id 8
+ int x 192
+ int y 144
+ int width 6
+ int height 6
+ ref wire 7
+ ref wire 9
+END
+ELEMENT WireEnd
+ int id 9
+ int x 240
+ int y 144
+ int width 6
+ int height 6
+ String put "27-2"
+ ref attach 2
+ ref wire 8
+END
+ELEMENT WireEnd
+ int id 10
+ int x 312
+ int y 132
+ int width 6
+ int height 6
+ String put "output"
+ ref attach 2
+ ref wire 11
+END
+ELEMENT WireEnd
+ int id 11
+ int x 384
+ int y 132
+ int width 6
+ int height 6
+ String put "input"
+ ref attach 3
+ ref wire 10
+END
+ENDCIRCUIT
