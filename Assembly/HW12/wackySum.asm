@@ -24,34 +24,32 @@ wackySum:
     move $s2, $a2
     li $s3, 0 #clear because we dont know what could be in here
 
-    move $t0, $s0 #i = a
-
     loop:
-        bgt $t0, $s1, done   # if (i > b) exit loop
+        bgt $s0, $s1, done   # if (i > b) exit loop
 
         #set our 4 parameters $a0-$a3
         #$a0 = i
-        move $a0, $t0 
+        move $a0, $s0 
 
         #$a1 = (i+1)/2
-        addi $a1, $t0, 1
-        li $t1, 2
-        div $a1, $t1
+        addi $a1, $s0, 1
+        li $t0, 2
+        div $a1, $t0
         mflo $a1
         
         #$a2 = (i+2)/2
-        addi $a2, $t0, 2
-        div $a2, $t1
+        addi $a2, $s0, 2
+        div $a2, $t0
         mflo $a2
 
         #$a3 = i+3
-        addi $a3, $t0, 3
+        addi $a3, $s0, 3
 
         jal combineFour
         #$v0 should now have the return from combine 4
         add $s3, $s3, $v0 #sum += combineFour(i, (i+1)/2, (i+2)/2, (i+3));
 
-        add $t0, $t0, $s2 # i += c
+        add $s0, $s0, $s2 # i += c
         j loop
     done:
         move $v0, $s3
