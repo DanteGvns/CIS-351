@@ -5,7 +5,7 @@ $dlunit = Join-Path $PSScriptRoot '..\JLS\DLUnit.jar'
 $cpu = Join-Path $PSScriptRoot 'PHSingleCycleCPU.jls'
 $tests = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'tests') -Filter '*.a' |
     Sort-Object Name)
-$java = Get-Command java -CommandType Application -ErrorAction Stop
+$java = Get-Command java -CommandType Application -ErrorAction Stop | Select-Object -First 1
 if (-not (Test-Path -LiteralPath $dlunit -PathType Leaf)) {
     throw "DLUnit.jar not found: $dlunit"
 }

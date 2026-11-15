@@ -18,7 +18,7 @@ if (-not (Test-Path -LiteralPath $AssemblyFile -PathType Leaf)) {
     throw "Assembly file not found: $AssemblyFile"
 }
 
-$java = Get-Command java -CommandType Application -ErrorAction Stop
+$java = Get-Command java -CommandType Application -ErrorAction Stop | Select-Object -First 1
 if ($PSBoundParameters.ContainsKey('OutputFile')) {
     $machineCode = @(& $java.Source -cp $dlunit edu.gvsu.dlunit.MARSAssembler $AssemblyFile)
     $assemblerExitCode = $LASTEXITCODE
