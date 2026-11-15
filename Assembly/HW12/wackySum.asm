@@ -1,4 +1,5 @@
 .globl wackySum
+.globl combineFour
 .text
 #Dante Givens
 
