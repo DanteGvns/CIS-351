@@ -10,7 +10,7 @@ wackySum:
     addi $sp, $sp, -20
 
     #save current return address to stack
-    sw $ra, 0(sp)
+    sw $ra, 0($sp)
     #save $s0-$s2 so we can use them later
     sw $s0, 4($sp)
     sw $s1 8($sp)
@@ -73,7 +73,7 @@ combineFour:
     #so well take 5 ints worth of space on the stack 5(4)=20
     addi $sp, $sp, -20
     #save current return address to stack
-    sw $ra, 0(sp)
+    sw $ra, 0($sp)
     #save $s0-$s2 so we can use them later
     sw $s0, 4($sp)
     sw $s1 8($sp)
@@ -99,10 +99,10 @@ combineFour:
 
     li $v0, 0 #clear because we dont know what could be in here
     bne $t3, $zero, ifHasRemainder
-    add $v0, $t0
+    move $v0, $t0
     j endIfHasRemainder
 ifHasRemainder:
-    add $v0, $t2
+    move $v0, $t2
 endIfHasRemainder:
     #put everything back how we found it
     lw $ra, 0($sp)
