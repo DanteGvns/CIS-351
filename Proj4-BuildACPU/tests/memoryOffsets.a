@@ -1,0 +1,46 @@
+.data
+words: .word 0x12345678, -1, 0, 0x80000000, 32767, -32768, 1983, 2007
+results: .space 64
+.text
+lui $2, 0x1001
+addi $3, $2, 16
+lw $4, 0($2)
+lw $5, 4($2)
+lw $6, 8($2)
+lw $7, 12($2)
+lw $8, 0($3)
+lw $9, 4($3)
+lw $10, -16($3)
+lw $11, -12($3)
+lw $12, -4($3)
+addi $13, $0, 321
+sw $13, 8($2)
+lw $14, 8($2)          # immediate store-to-load dependency
+addi $15, $0, -123
+sw $15, -12($3)
+lw $16, 4($2)
+sw $0, -4($3)
+lw $17, 12($2)
+# Offset bit 15 set: signed -32768, same first word.
+addi $18, $2, 32767
+addi $18, $18, 1
+lw $19, -32768($18)
+sw $4, 32($2)
+sw $5, 36($2)
+sw $7, 40($2)
+sw $9, 44($2)
+sw $14, 48($2)
+sw $16, 52($2)
+lw $20, 32($2)
+lw $21, 36($2)
+lw $22, 40($2)
+lw $23, 44($2)
+lw $24, 48($2)
+lw $25, 52($2)
+# Base register also acts as load destination; address uses its old value.
+addi $26, $2, 32
+lw $26, 0($26)
+# Standard pseudo-address forms used by the instructor, intentionally tested.
+lw $27, words
+sw $27, results
+lw $28, results

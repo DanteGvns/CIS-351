@@ -1,0 +1,89 @@
+# Exercise all register-address bits, zero-register protection and aliasing.
+# gp/sp/fp/ra are ordinary registers here: no syscalls or function calls.
+.data
+saved: .space 128
+.text
+addi $1, $0, 101
+addi $2, $0, 102
+addi $3, $0, 103
+addi $4, $0, 104
+addi $5, $0, 105
+addi $6, $0, 106
+addi $7, $0, 107
+addi $8, $0, 108
+addi $9, $0, 109
+addi $10, $0, 110
+addi $11, $0, 111
+addi $12, $0, 112
+addi $13, $0, 113
+addi $14, $0, 114
+addi $15, $0, 115
+addi $16, $0, 116
+addi $17, $0, 117
+addi $18, $0, 118
+addi $19, $0, 119
+addi $20, $0, 120
+addi $21, $0, 121
+addi $22, $0, 122
+addi $23, $0, 123
+addi $24, $0, 124
+addi $25, $0, 125
+addi $26, $0, 126
+addi $27, $0, 127
+addi $28, $0, 128
+addi $29, $0, 129
+addi $30, $0, 130
+addi $31, $0, 131
+# Retain all original values in checked memory before aliasing operations.
+add $31, $1, $0
+lui $1, 0x1001
+sw $31, 4($1)
+addi $31, $0, 131
+sw $2, 8($1)
+sw $3, 12($1)
+sw $4, 16($1)
+sw $5, 20($1)
+sw $6, 24($1)
+sw $7, 28($1)
+sw $8, 32($1)
+sw $9, 36($1)
+sw $10, 40($1)
+sw $11, 44($1)
+sw $12, 48($1)
+sw $13, 52($1)
+sw $14, 56($1)
+sw $15, 60($1)
+sw $16, 64($1)
+sw $17, 68($1)
+sw $18, 72($1)
+sw $19, 76($1)
+sw $20, 80($1)
+sw $21, 84($1)
+sw $22, 88($1)
+sw $23, 92($1)
+sw $24, 96($1)
+sw $25, 100($1)
+sw $26, 104($1)
+sw $27, 108($1)
+sw $28, 112($1)
+sw $29, 116($1)
+sw $30, 120($1)
+sw $31, 124($1)
+addi $0, $0, 99
+add  $0, $2, $3
+lui  $0, 0x1234
+ori  $0, $0, 0x1234
+lw   $0, 8($1)
+sw   $0, 0($1)         # must store zero
+add  $2, $2, $3        # rd = rs, 205
+sub  $3, $4, $3        # rd = rt, 1
+add  $4, $4, $4        # rd = rs = rt, 208
+and  $5, $5, $6
+or   $6, $7, $6
+nor  $7, $7, $7
+slt  $8, $8, $9
+addi $9, $9, -9
+ori  $10, $10, 0x4000
+andi $11, $11, 0x003F
+slti $12, $12, 113
+addi $13, $0, 0        # zero reads must still return zero

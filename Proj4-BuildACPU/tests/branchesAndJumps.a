@@ -1,0 +1,70 @@
+# Poison instructions expose wrong PC selection. All intended loops are bounded.
+.text
+addi $2, $0, 7
+addi $3, $0, 7
+addi $4, $0, 8
+addi $5, $0, 0
+addi $6, $0, 0
+addi $7, $0, 0
+beq $2, $3, equal_taken
+addi $5, $5, 1000       # must skip
+addi $5, $5, 2000       # must skip
+equal_taken:
+addi $5, $5, 1
+beq $2, $4, unequal_bad
+addi $6, $6, 2          # must execute: not taken
+j unequal_done
+addi $6, $6, 4000       # no delay-slot execution
+unequal_bad:
+addi $6, $6, 8000
+unequal_done:
+beq $0, $0, next        # displacement zero: next instruction
+next:
+addi $7, $7, 4
+addi $8, $0, -1
+addi $9, $0, -1
+addi $10, $0, 0
+beq $8, $9, negative_equal
+addi $10, $10, 1000
+negative_equal:
+addi $10, $10, 8
+beq $8, $0, negative_bad
+addi $10, $10, 16
+j negative_done
+negative_bad:
+addi $10, $10, 2000
+negative_done:
+# A zero result from a non-branch must not change the PC.
+sub $11, $2, $3
+addi $12, $0, 32
+addi $13, $0, 4
+addi $14, $0, 0
+backward_loop:
+addi $14, $14, 3
+addi $13, $13, -1
+beq $13, $0, backward_done
+beq $0, $0, backward_loop
+backward_done:
+# Backward j, with beq providing a bounded exit.
+addi $15, $0, 3
+addi $16, $0, 0
+jump_loop:
+addi $16, $16, 5
+addi $15, $15, -1
+beq $15, $0, jump_done
+j jump_loop
+addi $16, $16, 1000
+jump_done:
+addi $17, $0, 64
+j distant
+addi $17, $17, 1
+addi $17, $17, 2
+addi $17, $17, 4
+addi $17, $17, 8
+addi $17, $17, 16
+distant:
+addi $18, $17, 1        # 65
+beq $0, $0, finished
+addi $18, $18, 1000
+finished:
+addi $19, $0, 127

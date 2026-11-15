@@ -60,6 +60,8 @@ At the end of the project, your CPU should support the following instructions:
 
 ### Testing
 
+For additional whole-CPU coverage, see the [test suite](tests/README.md). From this project folder, run `.\runCpuTests.ps1` to execute all ten added assembly programs against your saved CPU.
+
 In order for your CPU to work seamlessly with the test suite, it must use the following interface:
 
 - Name the circuit for the entire CPU `PHSingleCycleCPU.jls`.
@@ -108,6 +110,8 @@ Your circuit's Instruction Memory element is configured to load data from this f
 **Important:** `marsAssembler` is a *bash* script. It won't run on the Windows command line. You will need to use Cygwin, WSL, or something similar to run it. Another option is to look inside the bash script and just run the Windows version of that command "by hand".
 
 #### Sign-extension subcircuit
+
+[add4.jls](add4.jls) adds 4 to `Input32` and produces `Output32`, both 32 bits. Connect the PC address to its input to calculate `PC + 4`. It is combinational, requires no clock, and wraps on 32-bit overflow.
 
 [PC.jls](PC.jls) is an importable 32-bit program-counter register. Connect the external next-address selection to `NextPC`, the CPU clock to `Clock`, and `Address` to `InstMemory.AddressIn`. It starts at zero and captures `NextPC` on each falling edge (50 time-unit register delay). It does not increment itself or convert byte addresses to word addresses; the PC+4 adder and branch/jump muxes belong outside it.
 

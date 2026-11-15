@@ -1,0 +1,44 @@
+# Adjacent stores and changing instructions expose asynchronous WE hazards.
+.data
+slots: .word 11, 22, 33, 44, 55, 66, 77, 88, 99, 111, 222, 333
+.text
+lui $2, 0x1001
+addi $3, $0, 1001
+addi $4, $0, -2002
+lui $5, 0x1234
+ori $5, $5, 0x5678
+sw $3, 0($2)
+sw $4, 4($2)           # WE must write again even if MemWrite stays asserted
+sw $5, 8($2)
+add $6, $3, $3         # must not corrupt last stored value
+lw $7, 0($2)
+lw $8, 4($2)
+lw $9, 8($2)
+sw $6, 12($2)
+lui $10, 0x7777        # large register/data change after sw
+lw $11, 12($2)
+sw $0, 16($2)
+ori $12, $0, 0x4567
+lw $13, 16($2)
+sw $12, 20($2)
+beq $3, $3, after_branch
+sw $4, 24($2)          # must NOT write
+after_branch:
+lw $14, 20($2)
+lw $15, 24($2)         # original 77
+sw $5, 28($2)
+j after_jump
+sw $4, 32($2)          # must NOT write
+after_jump:
+lw $16, 28($2)
+lw $17, 32($2)         # original 99
+# Load followed immediately by store using loaded data.
+lw $18, 0($2)
+sw $18, 36($2)
+lw $19, 36($2)
+# ALU result followed immediately by store.
+sub $20, $3, $4
+sw $20, 40($2)
+lw $21, 40($2)
+# Final store must commit before the harness-appended halt.
+sw $5, 44($2)

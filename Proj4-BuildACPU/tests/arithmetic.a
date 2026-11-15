@@ -1,0 +1,31 @@
+# Results are kept in distinct registers so DLUnit can check each case.
+.text
+addi $2, $0, 123
+addi $3, $0, -57
+add  $4, $2, $3         # 66
+sub  $5, $2, $3         # 180
+sub  $6, $3, $2         # -180
+add  $7, $3, $3         # -114
+sub  $8, $2, $2         # 0
+addi $9, $0, -32768
+addi $10, $0, 32767
+add  $11, $9, $10       # -1
+sub  $12, $10, $9       # 65535
+addi $13, $10, 1        # 32768: carry across bit 15
+addi $14, $9, -1        # -32769
+addi $15, $2, 0         # 123
+lui  $16, 0x1234
+addi $17, $16, -1       # 0x1233FFFF
+lui  $18, 0x8000
+addi $19, $18, 1        # 0x80000001, no signed overflow
+sub  $20, $19, $18      # 1
+add  $21, $0, $18       # 0x80000000
+lui  $22, 0x7FFF
+ori  $22, $22, 0x7FFF
+addi $23, $22, 1        # 0x7FFF8000
+addi $24, $0, 5
+addi $24, $24, 7
+add  $25, $24, $24      # 24: immediate read-after-write
+sub  $26, $25, $24      # 12
+addi $27, $26, -12      # 0
+add  $28, $27, $4       # 66

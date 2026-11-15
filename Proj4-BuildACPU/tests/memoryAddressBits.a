@@ -1,0 +1,36 @@
+# Toggle every implemented RAM word-address bit, then reread all locations.
+# An address bit stuck low causes earlier stores to be overwritten.
+.data
+observations: .space 80
+.text
+lui $2, 0x1001
+addi $3, $0, 4
+addi $4, $0, 20
+addi $5, $0, 1
+write_locations:
+add $6, $2, $3
+sw $5, 0($6)
+addi $5, $5, 1
+addi $4, $4, -1
+beq $4, $0, read_setup
+add $3, $3, $3
+j write_locations
+read_setup:
+addi $3, $0, 4
+addi $4, $0, 20
+addi $7, $2, 0
+addi $8, $0, 0
+read_locations:
+add $6, $2, $3
+lw $9, 0($6)
+sw $9, 0($7)          # preserve every reread, not just a final checksum
+add $8, $8, $9
+addi $7, $7, 4
+addi $4, $4, -1
+beq $4, $0, done
+add $3, $3, $3
+j read_locations
+done:
+# Expected checksum = 1 + ... + 20 = 210.
+lw $10, 0($2)
+lw $11, 76($2)

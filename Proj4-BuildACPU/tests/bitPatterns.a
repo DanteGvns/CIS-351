@@ -1,0 +1,33 @@
+# Exercise every bit through ALU logic and RAM, including bit 31.
+.data
+observations: .space 128
+.text
+lui $2, 0x1001
+addi $3, $0, 1
+addi $4, $0, 31
+nor $5, $0, $0
+addi $6, $0, 0
+bits:
+and $7, $3, $5
+or $8, $3, $0
+nor $9, $3, $0
+nor $10, $9, $0
+and $11, $7, $8
+and $12, $11, $10
+sw $12, 0($2)          # preserve each bit independently
+lw $13, 0($2)
+or $6, $6, $13
+addi $2, $2, 4
+addi $4, $4, -1
+beq $4, $0, sign_bit
+add $3, $3, $3         # last addition produces bit 30, no overflow
+j bits
+sign_bit:
+lui $14, 0x8000
+and $15, $14, $5
+or $16, $15, $0
+nor $17, $16, $0
+nor $18, $17, $0
+sw $18, 0($2)
+lw $19, 0($2)
+or $20, $6, $19        # all 32 bits set

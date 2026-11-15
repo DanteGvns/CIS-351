@@ -1,0 +1,52 @@
+# Sum signed array values, copy transformed values, and preserve each result.
+.data
+values: .word -8, 13, 0, 25, -3, 7, -11, 4
+transformed: .space 32
+summary: .space 16
+.text
+lui $2, 0x1001
+addi $3, $2, 32
+addi $4, $0, 8
+addi $5, $0, 0         # sum
+addi $6, $0, 0         # count negative
+addi $7, $0, 0         # count nonnegative
+loop:
+lw $8, 0($2)
+add $5, $5, $8
+slt $9, $8, $0
+beq $9, $0, nonnegative
+addi $6, $6, 1
+sub $10, $0, $8
+j save
+nonnegative:
+addi $7, $7, 1
+add $10, $8, $0
+save:
+ori $11, $10, 0x0100
+andi $12, $11, 0x01FF
+sw $12, 0($3)
+addi $2, $2, 4
+addi $3, $3, 4
+addi $4, $4, -1
+beq $4, $0, done
+j loop
+done:
+# Expected sum=27, negatives=3, nonnegatives=5.
+sw $5, 0($3)
+sw $6, 4($3)
+sw $7, 8($3)
+nor $13, $0, $0
+sw $13, 12($3)
+lw $14, 0($3)
+lw $15, 4($3)
+lw $16, 8($3)
+lw $17, 12($3)
+lui $18, 0x1001
+lw $19, 32($18)
+lw $20, 36($18)
+lw $21, 40($18)
+lw $22, 44($18)
+lw $23, 48($18)
+lw $24, 52($18)
+lw $25, 56($18)
+lw $26, 60($18)

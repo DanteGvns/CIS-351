@@ -1,0 +1,31 @@
+# Every subtraction used by slt/slti is within signed 32-bit range.
+.text
+addi $2, $0, -7
+addi $3, $0, 9
+slt  $4, $2, $3         # 1: negative < positive
+slt  $5, $3, $2         # 0
+slt  $6, $2, $2         # 0: equality
+slt  $7, $0, $0         # 0
+slt  $8, $2, $0         # 1
+slt  $9, $0, $2         # 0
+addi $10, $0, -8
+slt  $11, $10, $2       # 1: two negative operands
+slt  $12, $2, $10       # 0
+slti $13, $2, -6        # 1
+slti $14, $2, -7        # 0
+slti $15, $2, -8        # 0
+slti $16, $3, 10        # 1
+slti $17, $3, 9         # 0
+slti $18, $3, 8         # 0
+slti $19, $0, -32768    # 0: sign extension of immediate
+slti $20, $0, 32767     # 1
+lui  $21, 0x8000
+slt  $22, $21, $0       # 1: INT_MIN - 0 does not overflow
+lui  $23, 0x7FFF
+ori  $23, $23, 0x7FFF
+slt  $24, $0, $23       # 1
+slti $25, $21, -32768   # 1
+slti $26, $23, 32767    # 0
+addi $27, $0, 1
+slt  $27, $27, $3       # 1: destination aliases source
+slti $28, $27, 1        # 0
