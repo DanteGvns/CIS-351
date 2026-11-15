@@ -5,25 +5,21 @@
 
 
 wackySum:
-    #we have 3 ints/parameters + we need to save the return address 
-    #+ we'll want to keep out running sum total safe
-    #so well take 5 ints worth of space on the stack 5(4)=20
+    #save the return address, $s0-$s2, and running sum: 5(4)=20 bytes
     addi $sp, $sp, -20
 
     #save current return address to stack
     sw $ra, 0($sp)
     #save $s0-$s2 so we can use them later
     sw $s0, 4($sp)
-    sw $s1 8($sp)
+    sw $s1, 8($sp)
     sw $s2, 12($sp)
-    sw $s3, 16($sp)
+    sw $zero, 16($sp) # running sum placed on stack
 
-    #now we can actually start working
-    #move are params into the save regs
+    #move our params into the saved regs
     move $s0, $a0
     move $s1, $a1
     move $s2, $a2
-    li $s3, 0 #clear because we dont know what could be in here
 
     loop:
         bgt $s0, $s1, done   # if (i > b) exit loop
@@ -47,20 +43,21 @@ wackySum:
         addi $a3, $s0, 3
 
         jal combineFour
-        #$v0 should now have the return from combine 4
-        add $s3, $s3, $v0 #sum += combineFour(i, (i+1)/2, (i+2)/2, (i+3));
+        #$v0 should now have the return from combineFour
+        lw $t0, 16($sp)
+        addu $t0, $t0, $v0
+        sw $t0, 16($sp)
 
         add $s0, $s0, $s2 # i += c
         j loop
     done:
-        move $v0, $s3
+        lw $v0, 16($sp)
 
     #put everything back how we found it
     lw $ra, 0($sp)
     lw $s0, 4($sp)
-    lw $s1 8($sp)
+    lw $s1, 8($sp)
     lw $s2, 12($sp)
-    lw $s3, 16($sp)
 
     add $sp, $sp, 20
     jr $ra
@@ -68,48 +65,21 @@ wackySum:
 #Combine four ints and return their integer sum if even, 
 #otherwise return the sum with integer division by two.
 combineFour:
-    #we have 4 ints/parameters + we need to save the return address
-    #so well take 5 ints worth of space on the stack 5(4)=20
-    addi $sp, $sp, -20
-    #save current return address to stack
-    sw $ra, 0($sp)
-    #save $s0-$s2 so we can use them later
-    sw $s0, 4($sp)
-    sw $s1 8($sp)
-    sw $s2, 12($sp)
-    sw $s3, 16($sp)
-
-    #move are params into the save regs
-    move $s0, $a0
-    move $s1, $a1
-    move $s2, $a2
-    move $s3, $a3
-
-    #actual function starts here
-    li $t0, 0
-    add $t0, $a0, $a1
-    add $t1, $a2, $a3
-    add $t0, $t0, $t1 #t0 = a+b+c+d
+    # This leaf procedure uses only caller-saved registers, so no stack work is needed.
+    addu $t0, $a0, $a1
+    addu $t1, $a2, $a3
+    addu $t0, $t0, $t1 # t0 = a+b+c+d
 
     li $t1, 2
     div $t0, $t1
     mflo $t2 # quotient of $t0/$t1
-    mfhi $t3 # remainder of $t0/$t1
+    mfhi $t1 # remainder of $t0/$t1
 
-    li $v0, 0 #clear because we dont know what could be in here
-    bne $t3, $zero, ifHasRemainder
+    bne $t1, $zero, ifHasRemainder
     move $v0, $t0
     j endIfHasRemainder
 ifHasRemainder:
     move $v0, $t2
 endIfHasRemainder:
-    #put everything back how we found it
-    lw $ra, 0($sp)
-    lw $s0, 4($sp)
-    lw $s1 8($sp)
-    lw $s2, 12($sp)
-    lw $s3, 16($sp)
-
-    add $sp, $sp, 20
     jr $ra
 
