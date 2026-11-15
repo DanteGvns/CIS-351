@@ -109,6 +109,10 @@ Your circuit's Instruction Memory element is configured to load data from this f
 
 #### Sign-extension subcircuit
 
+[PC.jls](PC.jls) is an importable 32-bit program-counter register. Connect the external next-address selection to `NextPC`, the CPU clock to `Clock`, and `Address` to `InstMemory.AddressIn`. It starts at zero and captures `NextPC` on each falling edge (50 time-unit register delay). It does not increment itself or convert byte addresses to word addresses; the PC+4 adder and branch/jump muxes belong outside it.
+
+[extend2Bits.jls](extend2Bits.jls) is a separate combinational jump-field helper: `Input26` becomes `Output28` by appending two least-significant zero bits (`Output28 = Input26 << 2`). It does not add zeros to the high end.
+
 [SignExtend16To32.jls](SignExtend16To32.jls) can be imported into JLS as a subcircuit. Connect the 16-bit immediate field to `Input16`; its 32-bit `Output32` output preserves bits 15-0 and repeats bit 15 across bits 31-16. It is combinational and needs no clock.
 
 #### Windows PowerShell helper

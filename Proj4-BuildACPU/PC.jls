@@ -1,0 +1,109 @@
+CIRCUIT PC
+ELEMENT InputPin
+ int id 0
+ int x 60
+ int y 120
+ int width 72
+ int height 24
+ String name "NextPC"
+ int bits 32
+ int watch 0
+ String orient "RIGHT"
+END
+ELEMENT InputPin
+ int id 1
+ int x 60
+ int y 156
+ int width 72
+ int height 24
+ String name "Clock"
+ int bits 1
+ int watch 0
+ String orient "RIGHT"
+END
+ELEMENT Register
+ int id 2
+ int x 240
+ int y 120
+ int width 72
+ int height 60
+ String name "PCValue"
+ int bits 32
+ Int init 0
+ String orient "RIGHT"
+ int delay 50
+ String type "nff"
+ int watch 0
+END
+ELEMENT OutputPin
+ int id 3
+ int x 384
+ int y 120
+ int width 84
+ int height 24
+ String name "Address"
+ int bits 32
+ int watch 0
+ String orient "RIGHT"
+END
+ELEMENT WireEnd
+ int id 4
+ int x 132
+ int y 132
+ int width 6
+ int height 6
+ String put "output"
+ ref attach 0
+ ref wire 5
+END
+ELEMENT WireEnd
+ int id 5
+ int x 240
+ int y 132
+ int width 6
+ int height 6
+ String put "D"
+ ref attach 2
+ ref wire 4
+END
+ELEMENT WireEnd
+ int id 6
+ int x 132
+ int y 168
+ int width 6
+ int height 6
+ String put "output"
+ ref attach 1
+ ref wire 7
+END
+ELEMENT WireEnd
+ int id 7
+ int x 240
+ int y 168
+ int width 6
+ int height 6
+ String put "C"
+ ref attach 2
+ ref wire 6
+END
+ELEMENT WireEnd
+ int id 8
+ int x 312
+ int y 132
+ int width 6
+ int height 6
+ String put "Q"
+ ref attach 2
+ ref wire 9
+END
+ELEMENT WireEnd
+ int id 9
+ int x 384
+ int y 132
+ int width 6
+ int height 6
+ String put "input"
+ ref attach 3
+ ref wire 8
+END
+ENDCIRCUIT
